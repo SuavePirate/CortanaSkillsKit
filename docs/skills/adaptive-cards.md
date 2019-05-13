@@ -4,7 +4,7 @@ description: Learn how to use adaptive cards in your bot-based skill.
 label: Conceptual
 
 ms.assetid: A7CD987E-5DD1-42EA-A436-49D4E8327365
-ms.date: 02/12/2019
+ms.date: 05/10/2019
 ms.topic: article
 
 keywords: cortana
@@ -26,7 +26,10 @@ Adaptive cards provide the following options.
 |**Richer text** | Text in your card is not limited to title, subtitle, and text fixed formats. Use a variety of font sizes, formats, and colors. |
 |**A single open card exchange format** | Use your existing cards in a common and consistent way and extend your cards with rich controls using a common schema.  |
 
-Adaptive cards use the open card exchange format. This format enables you to specify user interface content for all cards in your skill in a common and consistent way. You describe the content as a simple JSON object. The JSON content is natively displayed by the skill and automatically adapts to the look and feel of your skill.  _Note, Cortana currently support Adaptive Cards version 1.0._
+Adaptive cards use the open card exchange format. This format enables you to specify user interface content for all cards in your skill in a common and consistent way. You describe the content as a simple JSON object. The JSON content is natively displayed by the skill and automatically adapts to the look and feel of your skill.
+
+>[!Important]
+>Cortana currently supports Adaptive Cards version 1.0. only.
 
 Adaptive cards include elements, containers, actions, and inputs. A basic adaptive card includes:
 
@@ -45,8 +48,9 @@ The Adaptive Cards Visualizer shows you what the JSON data will look like onscre
 * [adaptivecards.io/visualizer](https://adaptivecards.io/visualizer)
 
 >[!IMPORTANT]
-> 1. The speak object of an adaptive card needs to be copied to the Message for Cortana to speak the text.
-> 1. The speak object text needs to be wrapped in SSML `<speak>` tags (if it is not already).
+
+> 1. In order to have Cortana speak the text from an adaptive card, the speak object from the adaptive card needs to be copied to the `Message for Cortana`.
+> 1. Make sure the speak object text is wrapped in SSML `<speak>` tags. (See the Cortana [Speech Synthesis Markup Language (SSML) reference](https://docs.microsoft.com/en-us/cortana/skills/speech-synthesis-markup-language) for details.)
 
  The sample text block provides the title text for the sample card in the Adaptive Cards Visualizer.
 
@@ -78,7 +82,7 @@ The Adaptive Cards Visualizer shows you what the JSON data will look like onscre
 
 The following code adds an adaptive card to a Cortana skill response for Bot Framework V3.
 
- ```csharp
+```csharp
  var response = context.MakeMessage();
 
  AdaptiveCard card = new AdaptiveCard();
@@ -95,25 +99,26 @@ The following code adds an adaptive card to a Cortana skill response for Bot Fra
 
  await context.PostAsync(response);
  context.Wait(MessageReceived);
- ```  
+```
  
- ```javascript
+```javascript
 let msg = new builder.Message(session)
 // in V3, there is no AdaptiveCard builder or helper, so we send the JSON
-msg.addAttachment({
-		"contentType": "application/vnd.microsoft.card.adaptive",
-		"content": {
-			"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-			"type": "AdaptiveCard",
-			"version": "1.0",
-			"body": [{
-				"type": "TextBlock",
-				"text": "This is a test",
-				"size": "medium",
-				"weight": "bolder"
-			}]
-		}
-	});
+msg.addAttachment(
+{
+    "contentType": "application/vnd.microsoft.card.adaptive",
+    "content": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "type": "AdaptiveCard",
+        "version": "1.0",
+        "body": [{
+            "type": "TextBlock",
+            "text": "This is a test",
+            "size": "medium",
+            "weight": "bolder"
+        }]
+    }
+});
 session.send(msg);
  ```
 
